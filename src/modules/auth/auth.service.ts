@@ -7,7 +7,7 @@ import { Repository } from 'typeorm'
 
 import { BcryptUtil } from '@/common/utils'
 import { User } from '@/database/entities'
-import { LoginRequest, RefreshAccessTokenRequest } from './dto/request'
+import { LoginRequest, RefreshAccessTokenRequest, RegisterRequest } from './dto/request'
 import {
   AccessTokenResponse,
   AuthTokenResponse,
@@ -40,6 +40,22 @@ export class AuthService {
     }
 
     return this.buildLoginResponse(user)
+  }
+
+  public async register(registerRequest: RegisterRequest): Promise<LoginResponse> {
+    const { username, password } = registerRequest
+
+    const user = await this.userRepository.findOneBy({
+      username,
+    })
+    if (user) {
+      throw new BadRequestException('Tài khoản đã tồn tại.')
+    }
+
+    const userCreate = this.userRepository.create(registerRequest);
+    await this.userRepository.save(userCreate);
+
+    return this.buildLoginResponse(userCreate)
   }
 
   public async getProfile(user: User): Promise<ProfileResponse> {
