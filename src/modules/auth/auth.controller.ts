@@ -1,9 +1,9 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Req } from '@nestjs/common'
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { Auth } from '@/common/decorators'
 import { AuthService } from './auth.service'
-import { LoginRequest, RefreshAccessTokenRequest } from './dto/request'
+import { LoginRequest, RefreshAccessTokenRequest, RegisterRequest } from './dto/request'
 import {
   AccessTokenResponse,
   AuthTokenResponse,
@@ -22,6 +22,15 @@ export class AuthController {
   public async login(@Body() loginRequest: LoginRequest): Promise<LoginResponse> {
     const result = await this.authService.login(loginRequest)
     return result
+  }
+
+  @Post('/register')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOkResponse({ type: LoginResponse })
+  @ApiBadRequestResponse({ description: 'Invalid input or user already exists' })
+  public async register(@Body() registerRequest: RegisterRequest): Promise<LoginResponse> {
+    const result = await this.authService.register(registerRequest);
+    return result;
   }
 
   @Post('/profile')
