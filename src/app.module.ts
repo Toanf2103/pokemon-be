@@ -7,6 +7,7 @@ import { ScheduleModule } from '@nestjs/schedule'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthModule } from './modules/auth/auth.module'
 import { PokemonModule } from './modules/pokemon/pokemon.module'
+import { FavoritesModule } from './modules/favorites/favorites.module'
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PokemonModule } from './modules/pokemon/pokemon.module'
     ScheduleModule.forRoot(),
     AuthModule,
     PokemonModule,
+    FavoritesModule,
   ],
 })
 export class AppModule {}

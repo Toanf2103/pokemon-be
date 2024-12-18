@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'pokemons' })
-export class Pokemon {
+export class Pokemon extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string
 
@@ -46,14 +46,4 @@ export class Pokemon {
 
   @Column({ type: 'text' })
   ytbUrl: string
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: string
-
-  @Column({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: string
 }
