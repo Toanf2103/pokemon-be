@@ -5,19 +5,22 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
+  Param,
   ParseFilePipe,
   Post,
   Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common'
-import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiConsumes, ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { PokemonService } from './pokemon.service'
 import { AllPokemonRequest, CreatePokemonRequest, ImportPokemonRequest } from './dto/request'
 import { Pokemon } from '@/database/entities'
 import { Auth } from '@/common/decorators'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { parse } from 'csv-parse/sync'
+import { PaginatedPokemonResponse } from './dto/response/paginated-pokemon.response'
 
 @Controller('pokemons')
 @ApiTags('Pokemon')
@@ -36,9 +39,23 @@ export class PokemonController {
   @Get('/')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: [Pokemon] })
-  public async getAll(@Query() rq: AllPokemonRequest): Promise<Pokemon[]> {
+  public async getAll(@Query() rq: AllPokemonRequest): Promise<PaginatedPokemonResponse> {
     const result = await this.pokemonService.getAll(rq)
     return result
+  }
+
+  @Get('/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: Pokemon })
+  @ApiNotFoundResponse({ description: 'Pokemon not found' })
+  public async getDetail(@Param('id') id: string): Promise<Pokemon> {
+    const pokemon = await this.pokemonService.findOne(id);
+
+    if (!pokemon) {
+      throw new NotFoundException('Pokemon not found');
+    }
+
+    return pokemon;
   }
 
   @Post('import')

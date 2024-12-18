@@ -1,8 +1,9 @@
 import { Pokemon } from '@/database/entities'
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { DataSource, Repository } from 'typeorm'
 import { AllPokemonRequest, CreatePokemonRequest, ImportPokemonRequest } from './dto/request'
+import { PaginatedPokemonResponse } from './dto/response/paginated-pokemon.response'
 
 @Injectable()
 export class PokemonService {
@@ -32,19 +33,34 @@ export class PokemonService {
     return true
   }
 
-  public async getAll(rq: AllPokemonRequest): Promise<Pokemon[]> {
-    const {
-      page = 1, // Mặc định là trang đầu tiên
-      limit = 10, // Mặc định lấy 10 item mỗi trang
-    } = rq
-    // Khởi tạo query builder
+  public async getAll(rq: AllPokemonRequest): Promise<PaginatedPokemonResponse> {
+    const { page = 1, limit = 10 } = rq
+
     const query = this.pokemonRepository.createQueryBuilder('pokemon')
 
     // Phân trang
     const offset = (page - 1) * limit
     query.skip(offset).take(limit)
 
-    // Thực thi query và trả về kết quả
-    return await query.getMany()
+    const [pokemons, total] = await query.getManyAndCount()
+
+    return {
+      data: pokemons,
+      page,
+      limit,
+      total,
+    }
+  }
+
+  public async findOne(id: string): Promise<Pokemon | null> {
+    const pokemon = await this.pokemonRepository.findOne({
+      where: { id },
+    })
+
+    if (!pokemon) {
+      throw new NotFoundException('Pokemon not found')
+    }
+
+    return pokemon
   }
 }
