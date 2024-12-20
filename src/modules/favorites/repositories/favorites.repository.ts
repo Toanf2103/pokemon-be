@@ -9,7 +9,7 @@ export class FavoritesRepository extends Repository<Favorite> {
     super(Favorite, dataSource.createEntityManager())
   }
 
-  async toggleFavorite(userId: string, pokemonId: string): Promise<boolean> {
+  async toggleFavorite(userId: string, pokemonId: number): Promise<boolean> {
     const existingFavorite = await this.findOne({
       where: {
         user: { id: userId },

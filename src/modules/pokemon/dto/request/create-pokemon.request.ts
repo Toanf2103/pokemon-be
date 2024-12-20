@@ -86,7 +86,7 @@ export class CreatePokemonRequest {
   @ApiProperty({
     required: true,
   })
-  lenhendary: boolean
+  legendary: boolean
 
   @IsString()
   @IsNotEmpty()

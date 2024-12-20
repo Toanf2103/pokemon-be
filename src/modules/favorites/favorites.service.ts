@@ -13,7 +13,7 @@ export class FavoritesService {
     @InjectRepository(Pokemon) private readonly pokemonRepository: Repository<Pokemon>,
   ) {}
 
-  async toggleFavorite(userId: string, pokemonId: string): Promise<ToggleFavoriteResponse> {
+  async toggleFavorite(userId: string, pokemonId: number): Promise<ToggleFavoriteResponse> {
     // Kiểm tra Pokemon có tồn tại không
     const pokemon = await this.pokemonRepository.findOne({
       where: { id: pokemonId },

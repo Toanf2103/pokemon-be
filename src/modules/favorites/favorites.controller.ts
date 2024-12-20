@@ -14,7 +14,7 @@ export class FavoritesController {
   @Auth()
   @ApiOkResponse({ type: Boolean })
   async toggleFavorite(
-    @Param('pokemonId') pokemonId: string,
+    @Param('pokemonId') pokemonId: number,
     @Req() req,
   ): Promise<ToggleFavoriteResponse> {
     const userId = req.user.id

@@ -1,9 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Favorite } from './favorite.entity'
 
 @Entity({ name: 'pokemons' })
 export class Pokemon extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: string
+  id: number
 
   @Column()
   name: string
@@ -39,11 +40,14 @@ export class Pokemon extends BaseEntity {
   generation: number
 
   @Column({ default: false })
-  lenhendary: boolean
+  legendary: boolean
 
   @Column({ type: 'text' })
   image: string
 
   @Column({ type: 'text' })
   ytbUrl: string
+
+  @OneToMany(() => Favorite, favorite => favorite.pokemon)
+  favorites: Favorite[]
 }

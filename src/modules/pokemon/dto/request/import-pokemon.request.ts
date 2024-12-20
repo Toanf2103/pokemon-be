@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
+import { Transform } from 'class-transformer'
 import { IsBoolean, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator'
 
 export class ImportPokemonRequest {
@@ -88,12 +89,12 @@ export class ImportPokemonRequest {
   })
   generation: number
 
-  @IsBoolean()
+  @IsString()
   @IsNotEmpty()
   @ApiProperty({
     required: true,
   })
-  lenhendary: boolean
+  legendary: string
 
   @IsString()
   @IsNotEmpty()
