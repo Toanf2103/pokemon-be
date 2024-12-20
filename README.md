@@ -1,14 +1,26 @@
-## Coppy .env.example and rename to .env
-## Create database with name in env
+# NestJS MySQL Pokemon
 
+This project is built with NestJS and integrates MySQL for data persistence. It provides a backend application that interacts with a MySQL database and exposes API endpoints with Swagger documentation.
+
+## Prerequisites
+
+Before running the project, ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v14.x or later)
+- [npm](https://npmjs.com/) or [yarn](https://yarnpkg.com/) (optional but recommended)
+- [MySQL](https://www.mysql.com/) (either locally or via Docker)
+
+
+## Installation
+
+### 1. Clone the Repository
+
+Clone this project to your local machine:
 
 ```bash
-# install
-$ npm install
+git clone https://github.com/Toanf2103/pokemon-be
+cd your-project-name
 
-# watch mode
-$ npm run migration:run
-
-# start app
-$ npm run start:dev
-```
+npm install
+npm run migration:run
+npm run start:dev
