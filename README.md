@@ -14,13 +14,20 @@ Before running the project, ensure you have the following installed:
 ## Installation
 
 ### 1. Clone the Repository
-
-Clone this project to your local machine:
-
 ```bash
 git clone https://github.com/Toanf2103/pokemon-be
-cd your-project-name
-
+```
+### 2. Copy .env.example and change name to .env
+### 3. Install packages
+```bash
 npm install
+```
+### 4. Run migrate database (you need create 1 database name pokemon in mysql)
+```bash
 npm run migration:run
+```
+
+### 3. Run project
+```bash
 npm run start:dev
+```
