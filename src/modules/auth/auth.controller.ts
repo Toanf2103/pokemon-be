@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req } from '@nestjs/common'
 import { ApiBadRequestResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { Auth } from '@/common/decorators'
@@ -33,7 +33,7 @@ export class AuthController {
     return result;
   }
 
-  @Post('/profile')
+  @Get('/profile')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: ProfileResponse })
   @Auth()

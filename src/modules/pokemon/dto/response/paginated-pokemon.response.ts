@@ -1,12 +1,12 @@
-import { Pokemon } from '@/database/entities';
 import { ApiProperty } from '@nestjs/swagger';
+import { PokemonResponse } from './pokemon.response';
 
 export class PaginatedPokemonResponse {
   @ApiProperty({
     description: 'Danh sách các Pokemon',
-    type: [Pokemon],
+    type: [PokemonResponse],
   })
-  data: Pokemon[];
+  data: PokemonResponse[];
 
   @ApiProperty({
     description: 'Số trang hiện tại',

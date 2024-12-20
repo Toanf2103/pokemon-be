@@ -10,6 +10,7 @@ import {
   ParseFilePipe,
   Post,
   Query,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common'
@@ -38,9 +39,18 @@ export class PokemonController {
 
   @Get('/')
   @HttpCode(HttpStatus.OK)
+  @Auth()
   @ApiOkResponse({ type: [Pokemon] })
-  public async getAll(@Query() rq: AllPokemonRequest): Promise<PaginatedPokemonResponse> {
-    const result = await this.pokemonService.getAll(rq)
+  public async getAll(@Query() rq: AllPokemonRequest, @Req() req,): Promise<PaginatedPokemonResponse> {
+    const userId = req.user.id
+    const result = await this.pokemonService.getAll(rq, userId)
+    return result
+  }
+
+  @Get('/trailer')
+  @HttpCode(HttpStatus.OK)
+  public async trailer(): Promise<string[]> {
+    const result = await this.pokemonService.trailer()
     return result
   }
 
@@ -48,7 +58,7 @@ export class PokemonController {
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: Pokemon })
   @ApiNotFoundResponse({ description: 'Pokemon not found' })
-  public async getDetail(@Param('id') id: string): Promise<Pokemon> {
+  public async getDetail(@Param('id') id: number): Promise<Pokemon> {
     const pokemon = await this.pokemonService.findOne(id);
 
     if (!pokemon) {
